@@ -1,0 +1,302 @@
+/* =========================================================
+   CSS KHUSUS HALAMAN BERANDA
+   DESA WISATA KABUPATEN CIAMIS
+   ========================================================= */
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+    isolation: isolate;
+}
+
+.hero-content {
+    padding-top: 20px;
+}
+
+
+/* Efek sedikit lebih elegan pada badge */
+
+.hero-badge i {
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   INTRO SECTION
+   ========================================================= */
+
+.intro-section .section-label {
+    position: relative;
+    padding-left: 40px;
+}
+
+.intro-section .section-label::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 30px;
+    height: 2px;
+
+    background: var(--primary);
+
+    transform: translateY(-50%);
+}
+
+
+/* =========================================================
+   CATEGORY CARD
+   ========================================================= */
+
+.category-card {
+    position: relative;
+
+    overflow: hidden;
+}
+
+.category-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: -45px;
+    top: -45px;
+
+    border-radius: 50%;
+
+    background: var(--primary-light);
+
+    transition: 0.4s ease;
+
+    z-index: 0;
+}
+
+.category-card:hover::before {
+    transform: scale(2.5);
+
+    opacity: 0.6;
+}
+
+.category-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   CATEGORY ICON
+   ========================================================= */
+
+.category-card:hover .category-icon {
+    background: var(--primary);
+
+    color: white;
+
+    transform: rotate(-5deg) scale(1.05);
+}
+
+.category-icon {
+    transition: all 0.3s ease;
+}
+
+
+/* =========================================================
+   DESTINATION SECTION
+   ========================================================= */
+
+.featured-section {
+    overflow: hidden;
+}
+
+
+/* Section heading kiri */
+
+.featured-section .section-heading > div {
+    flex: 1;
+}
+
+
+/* =========================================================
+   DESTINATION CARD
+   ========================================================= */
+
+.destination-card {
+    position: relative;
+}
+
+.destination-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 3px;
+
+    background: var(--primary);
+
+    transform: scaleX(0);
+
+    transform-origin: left;
+
+    transition: transform 0.4s ease;
+}
+
+.destination-card:hover::after {
+    transform: scaleX(1);
+}
+
+
+/* =========================================================
+   DESTINATION IMAGE
+   ========================================================= */
+
+.destination-image {
+    background: #e9ecef;
+}
+
+.destination-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.18),
+        transparent 45%
+    );
+
+    pointer-events: none;
+}
+
+
+/* Kategori tetap di atas overlay */
+
+.destination-category {
+    z-index: 2;
+}
+
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.destination-content .location {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 9px;
+
+    background: var(--primary-light);
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.cta-box {
+    box-shadow: 0 15px 40px rgba(25, 135, 84, 0.20);
+}
+
+.cta-box .section-label {
+    margin-bottom: 8px;
+}
+
+.cta-box .btn-light {
+    transition: all 0.3s ease;
+}
+
+.cta-box .btn-light:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer-logo img {
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   RESPONSIVE BERANDA
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .hero-content {
+        padding-top: 10px;
+    }
+
+    .intro-section .section-label {
+        padding-left: 35px;
+    }
+
+    .featured-section .section-heading {
+        align-items: flex-start;
+    }
+
+    .category-card::before {
+        width: 80px;
+        height: 80px;
+    }
+
+}
+
+
+/* =========================================================
+   ANIMASI MASUK
+   ========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+.hero-badge {
+    animation: fadeUp 0.7s ease forwards;
+}
+
+.hero-content h1 {
+    animation: fadeUp 0.9s ease forwards;
+}
+
+.hero-content p {
+    animation: fadeUp 1.1s ease forwards;
+}
+
+.hero-buttons {
+    animation: fadeUp 1.3s ease forwards;
+}

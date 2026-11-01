@@ -1,0 +1,415 @@
+
+:root {
+  --green: #198754;
+  --green-dark: #126b42;
+  --green-light: #eaf5ee;
+  --text: #243247;
+  --muted: #718096;
+  --border: #e2e9e4;
+  --background: #f7faf8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-inner {
+  min-height: 74px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.brand span {
+  color: var(--green);
+}
+
+.back-link {
+  color: var(--green);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.booking-container {
+  max-width: 1080px;
+  padding-top: 34px;
+  padding-bottom: 56px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.breadcrumb a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.page-heading h1 {
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  margin: 9px 0;
+}
+
+.page-heading p,
+.panel-heading p,
+.side-panel > p {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(250px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.panel {
+  background: #fff;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(28, 55, 39, 0.04);
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.heading-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 23px;
+}
+
+.panel-heading h2,
+.side-panel h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.panel-heading p {
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  min-height: 47px;
+  padding: 11px 12px;
+  border: 1px solid #d6e0d9;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(25, 135, 84, .1);
+}
+
+.field-note {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 7px;
+}
+
+.quantity-control {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid #d6e0d9;
+  border-radius: 9px;
+}
+
+.quantity-control button {
+  width: 48px;
+  border: 0;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.quantity-control input {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  text-align: center;
+  font-weight: 700;
+}
+
+.quantity-control input::-webkit-inner-spin-button,
+.quantity-control input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.total-box {
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.total-box span,
+.summary-total span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.total-box strong,
+.summary-total strong {
+  color: var(--green);
+  font-size: 27px;
+  overflow-wrap: anywhere;
+}
+
+.total-box small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 47px;
+  padding: 12px 16px;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  width: 100%;
+  border: 0;
+  background: var(--green);
+  color: #fff;
+}
+
+.primary-button:hover {
+  background: var(--green-dark);
+}
+
+.primary-button i {
+  margin-left: 6px;
+}
+
+.side-panel > .heading-icon {
+  margin-bottom: 16px;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0;
+}
+
+.info-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 15px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.info-list i {
+  color: var(--green);
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 13px;
+  border-radius: 9px;
+  background: #fff7e5;
+  color: #805d17;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.payment-panel {
+  margin-top: 25px;
+}
+
+.payment-panel[hidden] {
+  display: none !important;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.payment-grid h3 {
+  font-size: 17px;
+  font-weight: 750;
+  margin: 0 0 18px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0ee;
+  font-size: 13px;
+}
+
+.summary-row span {
+  color: var(--muted);
+}
+
+.summary-row strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.summary-total {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.qris-box {
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.qris-box img {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto 14px;
+}
+
+.qris-box p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.qris-unavailable {
+  padding: 25px 12px;
+  border-radius: 9px;
+  background: var(--background);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.secondary-button {
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.disclaimer {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 24px;
+}
+
+.site-footer {
+  padding: 22px 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .topbar-inner {
+    min-height: 65px;
+  }
+
+  .booking-container {
+    padding-top: 24px;
+    padding-bottom: 38px;
+  }
+
+  .booking-grid,
+  .payment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .back-link {
+    font-size: 12px;
+  }
+}

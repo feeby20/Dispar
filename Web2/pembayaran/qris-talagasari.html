@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran QRIS Kampung Sawah | Visit Ciamis</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7f4;
+            color: #26352b;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: #176b45;
+            color: white;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar h2 { font-size: 20px; }
+        .navbar a { color: white; text-decoration: none; }
+
+        .container {
+            width: 92%;
+            max-width: 850px;
+            margin: 30px auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #176b45;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            color: #176b45;
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle { color: #6c776e; margin-bottom: 20px; }
+
+        .status {
+            display: inline-block;
+            padding: 6px 13px;
+            border-radius: 20px;
+            background: #fff0c2;
+            color: #815d00;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 11px 0;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #6c776e; }
+
+        .detail-value {
+            text-align: right;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .total { color: #176b45; font-size: 21px; }
+
+        .qris-section { text-align: center; }
+        .qris-section h2 { color: #176b45; margin-bottom: 8px; }
+
+        .qris-image {
+            display: block;
+            width: 100%;
+            max-width: 310px;
+            height: auto;
+            margin: 20px auto;
+            border: 1px solid #e0e5e0;
+            border-radius: 10px;
+        }
+
+        .notice {
+            padding: 14px;
+            margin-top: 18px;
+            background: #edf7f0;
+            border-left: 4px solid #176b45;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .form-group { margin: 20px 0; text-align: left; }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d9e0da;
+            border-radius: 8px;
+            background: white;
+        }
+
+        button, .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            background: #176b45;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover, .button:hover { background: #105535; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .button-secondary { background: #68776c; }
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .message.success { display: block; background: #e5f7e9; color: #176b35; }
+        .message.error { display: block; background: #fdeaea; color: #a12424; }
+        .message.info { display: block; background: #e9f2ff; color: #24528c; }
+        .hidden { display: none !important; }
+
+        .ticket-success { text-align: center; }
+        .ticket-success h2 { color: #176b45; margin-bottom: 10px; }
+        .success-icon { font-size: 48px; margin-bottom: 10px; }
+
+        .footer {
+            text-align: center;
+            color: #737c75;
+            font-size: 13px;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container { margin: 20px auto; }
+            .card { padding: 20px; }
+            h1 { font-size: 22px; }
+            .detail-row { font-size: 14px; }
+            .total { font-size: 19px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <h2>Visit Ciamis</h2>
+    <a href="../index.php">Beranda</a>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="../pemesanan%20tiket/talagasari.html">
+        &larr; Kembali ke Pemesanan
+    </a>
+
+    <section class="card">
+        <h1>Pembayaran Tiket</h1>
+        <p class="subtitle">Kampung Sawah, Kabupaten Ciamis</p>
+
+        <span class="status" id="paymentStatus">Menunggu Pembayaran</span>
+
+        <div class="detail-row">
+            <span class="detail-label">Kode Pemesanan</span>
+            <span class="detail-value" id="bookingCode">-</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Nama Pemesan</span>
+            <span class="detail-value" id="customerName">-</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Destinasi</span>
+            <span class="detail-value">Kampung Sawah</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Tanggal Kunjungan</span>
+            <span class="detail-value" id="visitDate">-</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Jumlah Tiket</span>
+            <span class="detail-value" id="ticketQuantity">-</span>
+        </div>
+
+        <div class="detail-row">
+            <span class="detail-label">Total Pembayaran</span>
+            <span class="detail-value total" id="totalPrice">-</span>
+        </div>
+
+        <div id="bookingMessage" class="message"></div>
+    </section>
+
+    <section class="card qris-section" id="paymentSection">
+        <h2>Bayar dengan QRIS</h2>
+        <p>Scan kode QR berikut menggunakan aplikasi pembayaran kamu.</p>
+
+        <img
+            src="../pictures/qris.jpeg"
+            alt="QRIS pembayaran Visit Ciamis"
+            class="qris-image"
+        >
+
+        <div class="notice">
+            <strong>Petunjuk pembayaran:</strong>
+            <ol style="padding-left:20px; margin-top:8px;">
+                <li>Buka aplikasi pembayaran yang mendukung QRIS.</li>
+                <li>Scan kode QR di atas.</li>
+                <li>Periksa nama penerima dan nominal sebelum membayar.</li>
+                <li>Selesaikan pembayaran, lalu simpan bukti transaksi.</li>
+                <li>Unggah bukti pembayaran melalui formulir di bawah.</li>
+            </ol>
+
+            <p style="margin-top:10px;">
+                Pastikan QRIS dan nominal pembayaran sesuai dengan instruksi
+                resmi pengelola Kampung Sawah.
+            </p>
+        </div>
+
+        <form id="paymentForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="paymentProof">Upload Bukti Pembayaran</label>
+                <input
+                    type="file"
+                    id="paymentProof"
+                    name="payment_proof"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                >
+            </div>
+
+            <button type="submit" id="uploadButton">
+                Kirim Bukti Pembayaran
+            </button>
+        </form>
+
+        <div id="uploadMessage" class="message"></div>
+    </section>
+
+    <section class="card hidden" id="ticketSection">
+        <div class="ticket-success">
+            <div class="success-icon">&#10004;</div>
+            <h2>Pembayaran Berhasil!</h2>
+
+            <p>
+                Pembayaran kamu telah dikonfirmasi. E-tiket Kampung Sawah
+                dapat dibuka melalui tombol berikut.
+            </p>
+
+            <br>
+
+            <a href="#" class="button" id="ticketLink">Lihat E-Tiket</a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">&copy; 2026 Visit Ciamis</footer>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const bookingCode = params.get("booking");
+
+    const paymentStatus = document.getElementById("paymentStatus");
+    const bookingMessage = document.getElementById("bookingMessage");
+    const uploadMessage = document.getElementById("uploadMessage");
+    const paymentForm = document.getElementById("paymentForm");
+    const uploadButton = document.getElementById("uploadButton");
+    const paymentSection = document.getElementById("paymentSection");
+    const ticketSection = document.getElementById("ticketSection");
+    const ticketLink = document.getElementById("ticketLink");
+
+    let pollingTimer = null;
+    let isUploading = false;
+
+    function formatRupiah(value) {
+        const number = Number(value);
+
+        if (!Number.isFinite(number)) return "-";
+
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
+        }).format(number);
+    }
+
+    function showMessage(element, text, type) {
+        element.textContent = text;
+        element.className = "message " + type;
+    }
+
+    function hideMessage(element) {
+        element.textContent = "";
+        element.className = "message";
+    }
+
+    function showBookingDetails(order) {
+        document.getElementById("bookingCode").textContent =
+            order.booking_code || bookingCode || "-";
+
+        document.getElementById("customerName").textContent =
+            order.full_name || "-";
+
+        document.getElementById("visitDate").textContent =
+            order.visit_date || "-";
+
+        document.getElementById("ticketQuantity").textContent =
+            order.ticket_qty != null ? order.ticket_qty + " tiket" : "-";
+
+        document.getElementById("totalPrice").textContent =
+            order.total_price != null ? formatRupiah(order.total_price) : "-";
+    }
+
+    function stopPolling() {
+        if (pollingTimer) {
+            clearInterval(pollingTimer);
+            pollingTimer = null;
+        }
+    }
+
+    function showPaidState() {
+        paymentStatus.textContent = "Pembayaran Lunas";
+        paymentStatus.style.background = "#e1f5e5";
+        paymentStatus.style.color = "#176b35";
+
+        paymentSection.classList.add("hidden");
+        ticketSection.classList.remove("hidden");
+
+        ticketLink.href =
+            "../tiket.php?booking=" + encodeURIComponent(bookingCode);
+
+        hideMessage(uploadMessage);
+        stopPolling();
+    }
+
+    async function checkPaymentStatus() {
+        if (!bookingCode || isUploading) return;
+
+        try {
+            const response = await fetch(
+                "../status-pesanan.php?booking=" +
+                encodeURIComponent(bookingCode),
+                { method: "GET", cache: "no-store" }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || data.success === false) return;
+
+            const status = String(
+                data.paymentStatus ||
+                data.order?.payment_status ||
+                data.status ||
+                data.payment_status ||
+                ""
+            ).trim().toLowerCase();
+
+            if (data.order) showBookingDetails(data.order);
+
+            if (status === "lunas") {
+                showPaidState();
+                return;
+            }
+
+            if (status === "menunggu verifikasi") {
+                paymentStatus.textContent = "Menunggu Verifikasi Admin";
+                paymentStatus.style.background = "#e9f2ff";
+                paymentStatus.style.color = "#24528c";
+
+                if (!uploadMessage.classList.contains("success")) {
+                    showMessage(
+                        uploadMessage,
+                        "Bukti pembayaran sedang diperiksa admin. E-tiket tersedia setelah pembayaran disetujui.",
+                        "info"
+                    );
+                }
+                return;
+            }
+
+            if (status === "menunggu pembayaran" || status === "pending") {
+                paymentStatus.textContent = "Menunggu Pembayaran";
+                paymentStatus.style.background = "#fff0c2";
+                paymentStatus.style.color = "#815d00";
+            }
+
+        } catch (error) {
+            console.error("Gagal memeriksa status pembayaran:", error);
+        }
+    }
+
+    async function uploadPaymentProof(event) {
+        event.preventDefault();
+        hideMessage(uploadMessage);
+
+        if (!bookingCode) {
+            showMessage(
+                uploadMessage,
+                "Kode pemesanan tidak ditemukan. Silakan ulangi pemesanan.",
+                "error"
+            );
+            return;
+        }
+
+        const file = document.getElementById("paymentProof").files[0];
+
+        if (!file) {
+            showMessage(uploadMessage, "Pilih bukti pembayaran terlebih dahulu.", "error");
+            return;
+        }
+
+        if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+            showMessage(uploadMessage, "Format file harus JPG, PNG, atau WEBP.", "error");
+            return;
+        }
+
+        if (file.size <= 0 || file.size > 3 * 1024 * 1024) {
+            showMessage(uploadMessage, "Ukuran gambar maksimal 3 MB.", "error");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("booking_code", bookingCode);
+        formData.append("payment_proof", file);
+
+        isUploading = true;
+        uploadButton.disabled = true;
+        uploadButton.textContent = "Mengirim...";
+
+        try {
+            const response = await fetch("../upload-bukti.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || result.success !== true) {
+                throw new Error(result.message || "Bukti pembayaran gagal dikirim.");
+            }
+
+            showMessage(
+                uploadMessage,
+                result.message ||
+                "Bukti pembayaran berhasil dikirim dan menunggu verifikasi admin.",
+                "success"
+            );
+
+            document.getElementById("paymentProof").value = "";
+            paymentStatus.textContent = "Menunggu Verifikasi Admin";
+            paymentStatus.style.background = "#e9f2ff";
+            paymentStatus.style.color = "#24528c";
+
+            await checkPaymentStatus();
+
+        } catch (error) {
+            showMessage(
+                uploadMessage,
+                error.message || "Terjadi kesalahan saat mengirim bukti pembayaran.",
+                "error"
+            );
+        } finally {
+            isUploading = false;
+            uploadButton.disabled = false;
+            uploadButton.textContent = "Kirim Bukti Pembayaran";
+        }
+    }
+
+    function initializePage() {
+        if (!bookingCode) {
+            showMessage(
+                bookingMessage,
+                "Kode pemesanan belum tersedia. Silakan lakukan pemesanan terlebih dahulu.",
+                "error"
+            );
+
+            paymentForm.classList.add("hidden");
+            return;
+        }
+
+        document.getElementById("bookingCode").textContent = bookingCode;
+
+        const storedOrder =
+            sessionStorage.getItem("visitCiamisOrder") ||
+            sessionStorage.getItem("order");
+
+        if (storedOrder) {
+            try {
+                const order = JSON.parse(storedOrder);
+
+                if (
+                    (order.booking_code || order.bookingCode) === bookingCode
+                ) {
+                    showBookingDetails({
+                        booking_code: order.booking_code || order.bookingCode,
+                        full_name: order.full_name || order.fullName,
+                        visit_date: order.visit_date || order.visitDate,
+                        ticket_qty: order.ticket_qty || order.ticketQty || order.quantity,
+                        total_price: order.total_price || order.totalPrice
+                    });
+                }
+            } catch (error) {
+                console.error("Data pemesanan tidak valid:", error);
+            }
+        }
+
+        paymentForm.addEventListener("submit", uploadPaymentProof);
+        checkPaymentStatus();
+
+        pollingTimer = setInterval(checkPaymentStatus, 5000);
+    }
+
+    initializePage();
+</script>
+
+</body>
+</html>

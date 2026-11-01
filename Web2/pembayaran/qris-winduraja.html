@@ -1,0 +1,609 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran QRIS | Visit Ciamis</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            font-family: Arial, sans-serif;
+            background: #f2f5f3;
+            color: #24352d;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #246b48;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            padding: 24px;
+            background: white;
+            border: 1px solid #dce7df;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(20, 60, 40, .06);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #246b48;
+            font-size: 25px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .muted {
+            color: #718078;
+            line-height: 1.6;
+        }
+
+        .booking-code {
+            margin: 8px 0 20px;
+            font-size: 21px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+        .detail span:first-child {
+            color: #718078;
+        }
+
+        .detail strong {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .total {
+            margin-top: 18px;
+            color: #246b48;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .qris-image {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 20px auto;
+            border: 1px solid #e0e7e2;
+            border-radius: 12px;
+        }
+
+        .status {
+            margin: 16px 0;
+            padding: 14px;
+            border-radius: 10px;
+            background: #fff4d6;
+            color: #805b00;
+            font-weight: bold;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .status.paid {
+            background: #e2f6e9;
+            color: #17663c;
+        }
+
+        .status.error {
+            background: #fde8e7;
+            color: #9a2525;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            margin-top: 14px;
+            padding: 14px 16px;
+            border: 0;
+            border-radius: 9px;
+            background: #246b48;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:disabled {
+            cursor: not-allowed;
+            opacity: .6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .notice {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #53665a;
+        }
+
+        .file-input {
+            display: block;
+            width: 100%;
+            margin: 14px 0;
+            padding: 12px;
+            border: 1px solid #dce7df;
+            border-radius: 9px;
+            background: #f9fbf9;
+        }
+
+        #uploadMessage {
+            overflow-wrap: anywhere;
+        }
+
+        .section-divider {
+            height: 1px;
+            margin: 22px 0;
+            background: #edf1ee;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 19px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <a class="back" href="../pemesanan.php">
+        &larr; Kembali ke Pemesanan Saya
+    </a>
+
+    <!-- DETAIL PESANAN -->
+    <section class="card">
+        <h1>Pembayaran QRIS</h1>
+
+        <p class="muted">
+            Periksa detail pesanan kamu sebelum melakukan pembayaran.
+        </p>
+
+        <div class="muted">Kode Booking</div>
+        <div class="booking-code" id="bookingCode">Memuat...</div>
+
+        <div class="detail">
+            <span>Destinasi</span>
+            <strong id="destination">-</strong>
+        </div>
+
+        <div class="detail">
+            <span>Nama Pemesan</span>
+            <strong id="fullName">-</strong>
+        </div>
+
+        <div class="detail">
+            <span>Tanggal Kunjungan</span>
+            <strong id="visitDate">-</strong>
+        </div>
+
+        <div class="detail">
+            <span>Jumlah Tiket</span>
+            <strong id="ticketQty">-</strong>
+        </div>
+
+        <div class="total" id="totalPrice">Total: -</div>
+    </section>
+
+    <!-- PEMBAYARAN QRIS -->
+    <section class="card">
+        <h2>Scan QRIS untuk Membayar</h2>
+
+        <p class="muted">
+            Buka aplikasi pembayaran yang mendukung QRIS, lalu scan
+            kode yang ditampilkan di bawah ini.
+        </p>
+
+        <img
+            class="qris-image"
+            src="../pictures/qris.jpeg"
+            alt="Kode QRIS pembayaran Visit Ciamis"
+        >
+
+        <p class="notice">
+            Pastikan nama penerima dan nominal pembayaran sesuai
+            dengan informasi pembayaran yang resmi.
+        </p>
+    </section>
+
+    <!-- STATUS DAN UNGGAH BUKTI DALAM SATU CARD -->
+    <section class="card">
+        <h2>Status & Bukti Pembayaran</h2>
+
+        <p class="muted">
+            Status pembayaran akan diperbarui otomatis setelah admin
+            memverifikasi bukti pembayaran.
+        </p>
+
+        <div id="paymentStatus" class="status" aria-live="polite">
+            Memeriksa status pembayaran...
+        </div>
+
+        <p id="lastChecked" class="notice"></p>
+
+        <div class="section-divider"></div>
+
+        <form id="proofForm" enctype="multipart/form-data">
+            <label for="paymentProof">
+                <strong>Unggah Bukti Pembayaran</strong>
+            </label>
+
+            <p class="notice">
+                Setelah membayar, unggah bukti pembayaran yang jelas.
+                Format JPG, PNG, atau WEBP dengan ukuran maksimal 3 MB.
+                Pembayaran akan menunggu verifikasi admin sebelum
+                dinyatakan lunas.
+            </p>
+
+            <input
+                type="file"
+                id="paymentProof"
+                name="payment_proof"
+                class="file-input"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                required
+            >
+
+            <button
+                type="submit"
+                id="uploadButton"
+                class="button"
+            >
+                Unggah Bukti Pembayaran
+            </button>
+
+            <p
+                id="uploadMessage"
+                class="notice"
+                aria-live="polite"
+            ></p>
+        </form>
+
+        <a
+            id="ticketButton"
+            class="button hidden"
+            href="#"
+        >
+            Lihat E-Tiket
+        </a>
+    </section>
+
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    const BASE_URL = "../";
+    const params = new URLSearchParams(window.location.search);
+    const bookingCode = params.get("booking");
+
+    const statusElement = document.getElementById("paymentStatus");
+    const ticketButton = document.getElementById("ticketButton");
+    const lastChecked = document.getElementById("lastChecked");
+
+    const proofForm = document.getElementById("proofForm");
+    const proofInput = document.getElementById("paymentProof");
+    const uploadButton = document.getElementById("uploadButton");
+    const uploadMessage = document.getElementById("uploadMessage");
+
+    let checking = false;
+    let uploading = false;
+    let timer = null;
+    let paid = false;
+
+    function formatRupiah(value) {
+        return "Rp" + Number(value || 0).toLocaleString("id-ID");
+    }
+
+    function showStatus(message, type) {
+        statusElement.textContent = message;
+        statusElement.className = "status" + (type ? " " + type : "");
+    }
+
+    function formatDate(value) {
+        if (!value) return "-";
+
+        const parts = value.split("-");
+
+        if (parts.length === 3) {
+            return parts[2] + "-" + parts[1] + "-" + parts[0];
+        }
+
+        return value;
+    }
+
+    function displayOrder() {
+        document.getElementById("bookingCode").textContent =
+            bookingCode || "-";
+
+        try {
+            const raw = sessionStorage.getItem("visitCiamisOrder");
+
+            if (!raw) return;
+
+            const order = JSON.parse(raw);
+
+            if (order.booking_code !== bookingCode) return;
+
+            document.getElementById("destination").textContent =
+                order.destination_name || "Windu Raja";
+
+            document.getElementById("fullName").textContent =
+                order.full_name || "-";
+
+            document.getElementById("visitDate").textContent =
+                formatDate(order.visit_date);
+
+            document.getElementById("ticketQty").textContent =
+                (order.ticket_qty || 0) + " tiket";
+
+            document.getElementById("totalPrice").textContent =
+                "Total: " + formatRupiah(order.total_price);
+
+        } catch (error) {
+            console.error("Gagal membaca detail pesanan:", error);
+        }
+    }
+
+    async function checkPaymentStatus() {
+        if (checking || paid || !bookingCode) return;
+
+        checking = true;
+
+        try {
+            const response = await fetch(
+                BASE_URL + "status-pesanan.php?booking=" +
+                    encodeURIComponent(bookingCode),
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+            const result = await response.json();
+
+            if (response.status === 401) {
+                clearInterval(timer);
+
+                showStatus(
+                    "Sesi login berakhir. Silakan login kembali.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message ||
+                    "Status pembayaran belum dapat diperiksa."
+                );
+            }
+
+            const order = result.order || {};
+
+            const status = String(
+                result.paymentStatus ||
+                order.payment_status ||
+                ""
+            ).trim().toLowerCase();
+
+            lastChecked.textContent =
+                "Pembaruan terakhir: " +
+                new Date().toLocaleTimeString("id-ID");
+
+            if (status === "lunas") {
+                paid = true;
+                clearInterval(timer);
+
+                showStatus(
+                    "Pembayaran telah dinyatakan lunas. E-tiket tersedia.",
+                    "paid"
+                );
+
+                ticketButton.href =
+                    BASE_URL + "tiket.php?booking=" +
+                    encodeURIComponent(bookingCode);
+
+                ticketButton.classList.remove("hidden");
+
+                proofInput.disabled = true;
+                uploadButton.disabled = true;
+
+                uploadMessage.textContent =
+                    "Pesanan sudah lunas. Bukti pembayaran tidak perlu diunggah lagi.";
+
+            } else {
+                showStatus(
+                    "Status: " + (status || "menunggu pembayaran") +
+                    ". Jika sudah membayar, silakan unggah bukti pembayaran di bawah ini.",
+                    ""
+                );
+            }
+
+        } catch (error) {
+            console.error("Pemeriksaan pembayaran gagal:", error);
+
+            showStatus(
+                "Status belum berhasil diperbarui. Sistem akan mencoba kembali secara otomatis.",
+                "error"
+            );
+
+        } finally {
+            checking = false;
+        }
+    }
+
+    // PROSES UNGGAH BUKTI PEMBAYARAN
+    proofForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (uploading) return;
+
+        if (!bookingCode) {
+            uploadMessage.textContent =
+                "Kode booking tidak ditemukan.";
+            return;
+        }
+
+        if (paid) {
+            uploadMessage.textContent =
+                "Pesanan sudah lunas. Bukti baru tidak diperlukan.";
+            return;
+        }
+
+        const file = proofInput.files[0];
+
+        if (!file) {
+            uploadMessage.textContent =
+                "Pilih gambar bukti pembayaran terlebih dahulu.";
+            return;
+        }
+
+        if (file.size <= 0 || file.size > 3 * 1024 * 1024) {
+            uploadMessage.textContent =
+                "Ukuran gambar harus lebih dari 0 dan maksimal 3 MB.";
+            return;
+        }
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            uploadMessage.textContent =
+                "Format gambar harus JPG, PNG, atau WEBP.";
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("booking_code", bookingCode);
+        formData.append("payment_proof", file);
+
+        uploading = true;
+        uploadButton.disabled = true;
+
+        uploadMessage.textContent =
+            "Sedang mengunggah bukti pembayaran...";
+
+        try {
+            const response = await fetch(
+                BASE_URL + "upload-bukti.php",
+                {
+                    method: "POST",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            if (response.status === 401) {
+                throw new Error(
+                    "Sesi login berakhir. Silakan login kembali."
+                );
+            }
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message ||
+                    "Bukti pembayaran gagal diunggah."
+                );
+            }
+
+            uploadMessage.textContent =
+                result.message || "Bukti pembayaran berhasil diunggah.";
+
+            proofInput.value = "";
+
+            // Perbarui status setelah unggahan berhasil.
+            await checkPaymentStatus();
+
+        } catch (error) {
+            uploadMessage.textContent = error.message;
+
+        } finally {
+            uploading = false;
+
+            if (!paid) {
+                uploadButton.disabled = false;
+            }
+        }
+    });
+
+    // INISIALISASI HALAMAN
+    if (!bookingCode) {
+        showStatus(
+            "Kode booking tidak ditemukan. Buka kembali pesanan kamu.",
+            "error"
+        );
+
+        proofInput.disabled = true;
+        uploadButton.disabled = true;
+
+        uploadMessage.textContent =
+            "Halaman ini harus dibuka melalui pesanan yang valid.";
+
+    } else {
+        displayOrder();
+
+        checkPaymentStatus();
+
+        // Status tetap diperiksa otomatis setiap 5 detik.
+        timer = setInterval(checkPaymentStatus, 5000);
+    }
+})();
+</script>
+
+</body>
+</html>
+```
